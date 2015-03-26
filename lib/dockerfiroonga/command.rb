@@ -10,6 +10,9 @@ module Dockerfiroonga
       @platform_name = arguments[0]
       @platform = Platform.new(@platform_name)
       @_roonga = arguments[1] || "groonga"
+      unless @platform.respond_to?("installation_#{@_roonga}")
+        raise ArgumentError, "Not supported yet: <#{@_roonga}>"
+      end
     end
 
     def run

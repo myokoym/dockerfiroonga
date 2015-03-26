@@ -56,4 +56,10 @@ RUN gem install rroonga
 CMD ["groonga", "--version"]
     END_OF_FILE
   end
+
+  def test_not_supported_xroonga
+    assert_raise ArgumentError do
+      Dockerfiroonga::Command.new([@platform_name, "xxxroonga"])
+    end
+  end
 end
