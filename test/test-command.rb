@@ -66,7 +66,10 @@ CMD ["groonga", "--version"]
     def test_groonga
       @command = Dockerfiroonga::Command.new([@platform_name, "groonga"])
       @command.run
+      version = "5.0.0"
       assert_equal(<<-END_OF_FILE, @output)
+FROM debian:sid
+MAINTAINER Masafumi Yokoyama <yokoyama@clear-code.com>
 RUN apt-get update
 RUN apt-get install -y -V  wget tar build-essential zlib1g-dev liblzo2-dev libmsgpack-dev libzmq-dev libevent-dev libmecab-dev
 RUN wget http://packages.groonga.org/source/groonga/groonga-#{version}.tar.gz
@@ -83,8 +86,9 @@ CMD ["groonga", "--version"]
     def test_rroonga
       @command = Dockerfiroonga::Command.new([@platform_name, "rroonga"])
       @command.run
+      version = "5.0.0"
       assert_equal(<<-END_OF_FILE, @output)
-FROM centos
+FROM debian:sid
 MAINTAINER Masafumi Yokoyama <yokoyama@clear-code.com>
 RUN apt-get update
 RUN apt-get install -y -V  wget tar build-essential zlib1g-dev liblzo2-dev libmsgpack-dev libzmq-dev libevent-dev libmecab-dev
