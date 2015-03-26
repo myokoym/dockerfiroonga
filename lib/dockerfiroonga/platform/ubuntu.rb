@@ -6,6 +6,10 @@ module Dockerfiroonga
       include Base
 
       def installation
+        installation_groonga
+      end
+
+      def installation_groonga
         <<-END_OF_INSTALLATION
 RUN apt-get -y install software-properties-common
 RUN add-apt-repository -y universe
