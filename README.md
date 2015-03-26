@@ -10,6 +10,17 @@ Dockerfile generator for Groonga family.
 
     $ dockerfiroonga PLATFORM [Xroonga]
 
+### PLATFORM
+
+* `debian:sid` (.tar.gz)
+* `ubuntu` (PPA)
+* `centos` (yum)
+
+### Xroonga
+
+* `groonga` (default)
+* `rroonga`
+
 ## Authors
 
 * Masafumi Yokoyama `<yokoyama@clear-code.com>`
