@@ -57,6 +57,47 @@ CMD ["groonga", "--version"]
     END_OF_FILE
   end
 
+  class CentosTest < self
+    def setup
+      super
+      @platform_name = "centos"
+    end
+
+    def test_groonga
+      @command = Dockerfiroonga::Command.new([@platform_name, "groonga"])
+      @command.run
+      assert_equal(<<-END_OF_FILE, @output)
+FROM centos
+MAINTAINER Masafumi Yokoyama <yokoyama@clear-code.com>
+RUN rpm -ivh http://packages.groonga.org/centos/groonga-release-1.1.0-1.noarch.rpm
+RUN yum makecache
+RUN yum install -y groonga
+
+CMD ["groonga", "--version"]
+      END_OF_FILE
+    end
+
+    def test_rroonga
+      @command = Dockerfiroonga::Command.new([@platform_name, "rroonga"])
+      @command.run
+      assert_equal(<<-END_OF_FILE, @output)
+FROM centos
+MAINTAINER Masafumi Yokoyama <yokoyama@clear-code.com>
+RUN rpm -ivh http://packages.groonga.org/centos/groonga-release-1.1.0-1.noarch.rpm
+RUN yum makecache
+RUN yum install -y groonga
+
+RUN yum install -y groonga-devel
+RUN yum install -y ruby-devel
+RUN yum install -y make gcc zlib-devel openssl-devel
+RUN gem install rdoc
+RUN gem install rroonga
+
+CMD ["groonga", "--version"]
+      END_OF_FILE
+    end
+  end
+
   def test_not_supported_xroonga
     assert_raise ArgumentError do
       Dockerfiroonga::Command.new([@platform_name, "xxxroonga"])
