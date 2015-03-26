@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Masafumi Yokoyama"]
   spec.email         = ["yokoyama@clear-code.com"]
 
-  spec.summary       = %q{Dockerfile generater for Groonga family.}
+  spec.summary       = %q{Dockerfile generator for Groonga family.}
   spec.description   = spec.summary
   spec.homepage      = "https://github.com/myokoym/dockerfiroonga"
   spec.license       = "Apache-2.0"
