@@ -1,8 +1,9 @@
+require "dockerfiroonga/platform/base"
+
 module Dockerfiroonga
   module Platform
     class Ubuntu
-      def initialize
-      end
+      include Base
 
       def installation
         <<-END_OF_INSTALLATION
