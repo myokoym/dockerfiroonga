@@ -5,10 +5,6 @@ module Dockerfiroonga
     class Centos
       include Base
 
-      def installation
-        installation_groonga
-      end
-
       def installation_groonga
         <<-END_OF_INSTALLATION
 RUN rpm -ivh http://packages.groonga.org/centos/groonga-release-1.1.0-1.noarch.rpm
