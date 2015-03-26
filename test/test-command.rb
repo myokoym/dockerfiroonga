@@ -20,4 +20,19 @@ class CommandTest < Test::Unit::TestCase
       @output.each_line.first.start_with?("FROM #{@platform_name}")
     end
   end
+
+  def test_ubuntu
+    @command.run
+    assert_equal(<<-END_OF_FILE, @output)
+FROM ubuntu
+MAINTAINER Masafumi Yokoyama <yokoyama@clear-code.com>
+RUN apt-get -y install software-properties-common
+RUN add-apt-repository -y universe
+RUN add-apt-repository -y ppa:groonga/ppa
+RUN apt-get update
+RUN apt-get -y install groonga
+
+CMD ["groonga", "--version"]
+    END_OF_FILE
+  end
 end
