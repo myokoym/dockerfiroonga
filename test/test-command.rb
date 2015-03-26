@@ -149,6 +149,14 @@ CMD ["groonga", "--version"]
     end
   end
 
+  def test_no_argument
+    @command = Dockerfiroonga::Command.new([])
+    @command.run
+    assert do
+      @output.start_with?("Usage: ")
+    end
+  end
+
   def test_not_supported_xroonga
     assert_raise ArgumentError do
       Dockerfiroonga::Command.new([@platform_name, "xxxroonga"])

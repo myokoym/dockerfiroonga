@@ -7,6 +7,19 @@ module Dockerfiroonga
     end
 
     def initialize(arguments)
+      if arguments.empty?
+        $stdout.puts(<<-END_OF_USAGE)
+Usage: dockerfiroonga PLATFORM [Xroonga]
+  PLATFORM:
+    * debian:sid (.tar.gz)
+    * ubuntu (PPA)
+    * centos (yum)
+  Xroonga:
+    * groonga (default)
+    * rroonga
+        END_OF_USAGE
+        exit(true)
+      end
       @platform_name = arguments[0]
       @platform = Platform.new(@platform_name)
       @_roonga = arguments[1] || "groonga"
