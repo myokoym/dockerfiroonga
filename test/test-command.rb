@@ -57,6 +57,53 @@ CMD ["groonga", "--version"]
     END_OF_FILE
   end
 
+  class DebianSidTest < self
+    def setup
+      super
+      @platform_name = "debian:sid"
+    end
+
+    def test_groonga
+      @command = Dockerfiroonga::Command.new([@platform_name, "groonga"])
+      @command.run
+      assert_equal(<<-END_OF_FILE, @output)
+RUN apt-get update
+RUN apt-get install -y -V  wget tar build-essential zlib1g-dev liblzo2-dev libmsgpack-dev libzmq-dev libevent-dev libmecab-dev
+RUN wget http://packages.groonga.org/source/groonga/groonga-#{version}.tar.gz
+RUN tar xvzf groonga-#{version}.tar.gz
+RUN cd groonga-#{version}/                            && \
+    ./configure --prefix=/usr/local                   && \
+    make -j$(grep '^processor' /proc/cpuinfo | wc -l) && \
+    make install
+
+CMD ["groonga", "--version"]
+      END_OF_FILE
+    end
+
+    def test_rroonga
+      @command = Dockerfiroonga::Command.new([@platform_name, "rroonga"])
+      @command.run
+      assert_equal(<<-END_OF_FILE, @output)
+FROM centos
+MAINTAINER Masafumi Yokoyama <yokoyama@clear-code.com>
+RUN apt-get update
+RUN apt-get install -y -V  wget tar build-essential zlib1g-dev liblzo2-dev libmsgpack-dev libzmq-dev libevent-dev libmecab-dev
+RUN wget http://packages.groonga.org/source/groonga/groonga-#{version}.tar.gz
+RUN tar xvzf groonga-#{version}.tar.gz
+RUN cd groonga-#{version}/                            && \
+    ./configure --prefix=/usr/local                   && \
+    make -j$(grep '^processor' /proc/cpuinfo | wc -l) && \
+    make install
+
+RUN apt-get -y install libgroonga-dev
+RUN apt-get -y install ruby-dev
+RUN gem install rroonga
+
+CMD ["groonga", "--version"]
+      END_OF_FILE
+    end
+  end
+
   class CentosTest < self
     def setup
       super
