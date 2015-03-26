@@ -2,4 +2,4 @@
 
 require "dockerfiroonga/command"
 
-Dockerfiroonga::Command.run
+Dockerfiroonga::Command.run(ARGV)

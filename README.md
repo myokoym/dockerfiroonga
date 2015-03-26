@@ -8,7 +8,7 @@ Dockerfile generator for Groonga family.
 
 ## Usage
 
-    $ dockerfiroonga
+    $ dockerfiroonga PLATFORM
 
 ## Authors
 

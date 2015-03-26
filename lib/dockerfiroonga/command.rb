@@ -1,21 +1,21 @@
+require "dockerfiroonga/platform"
+
 module Dockerfiroonga
   class Command
-    def self.run
-      new.run
+    def self.run(arguments)
+      new(arguments).run
     end
 
-    def initialize
+    def initialize(arguments)
+      @platform_name = arguments[0]
+      @platform = Platform.new(@platform_name)
     end
 
     def run
       puts <<-END_OF_FILE
-FROM ubuntu
+FROM #{@platform_name}
 MAINTAINER Masafumi Yokoyama <yokoyama@clear-code.com>
-RUN apt-get -y install software-properties-common
-RUN add-apt-repository -y universe
-RUN add-apt-repository -y ppa:groonga/ppa
-RUN apt-get update
-RUN apt-get -y install groonga
+#{@platform.installation}
 CMD ["groonga", "--version"]
       END_OF_FILE
     end

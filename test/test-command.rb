@@ -3,7 +3,8 @@ require "dockerfiroonga/command"
 
 class CommandTest < Test::Unit::TestCase
   def setup
-    @command = Dockerfiroonga::Command.new
+    @platform_name = "ubuntu"
+    @command = Dockerfiroonga::Command.new([@platform_name])
     @output = ""
     io = StringIO.new(@output)
     $stdout = io
@@ -16,7 +17,7 @@ class CommandTest < Test::Unit::TestCase
   def test_run
     @command.run
     assert do
-      @output.each_line.first.start_with?("FROM ")
+      @output.each_line.first.start_with?("FROM #{@platform_name}")
     end
   end
 end
