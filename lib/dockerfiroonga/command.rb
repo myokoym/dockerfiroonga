@@ -26,14 +26,14 @@ Usage: dockerfiroonga [OPTIONS] PLATFORM [Xroonga]
       begin
         @platform = Platform.new(@platform_name)
       rescue ArgumentError
-        $stdout.puts("This platform is not supported yet: <#{@platform_name}>")
-        $stdout.puts(USAGE)
+        puts("This platform is not supported yet: <#{@platform_name}>")
+        puts(USAGE)
         exit(true)
       end
       @_roonga = arguments[1] || "groonga"
       unless @platform.respond_to?("installation_#{@_roonga}")
-        $stdout.puts("This Xroonga is not supported yet: <#{@_roonga}>")
-        $stdout.puts(USAGE)
+        puts("This Xroonga is not supported yet: <#{@_roonga}>")
+        puts(USAGE)
         exit(true)
       end
       @maintainer = @options[:maintainer] ||
@@ -58,7 +58,7 @@ CMD ["groonga", "--version"]
       END_OF_BANNER
       parser.version = VERSION
       parser.on("-h", "--help", "Show usage") do |boolean|
-        $stdout.puts(parser.help)
+        puts(parser.help)
         exit(true)
       end
       parser.on("--maintainer=NAME", "Set maintainer") do |name|
@@ -67,7 +67,7 @@ CMD ["groonga", "--version"]
       parser.parse!(arguments)
 
       if arguments.empty?
-        $stdout.puts(parser.help)
+        puts(parser.help)
         exit(true)
       end
 
