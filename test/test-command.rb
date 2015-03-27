@@ -151,7 +151,7 @@ CMD ["groonga", "--version"]
 
   def test_no_argument
     assert_raise SystemExit do
-      @command = Dockerfiroonga::Command.new([])
+      Dockerfiroonga::Command.new([])
     end
     assert do
       @output.start_with?("Usage: ")
@@ -160,7 +160,7 @@ CMD ["groonga", "--version"]
 
   def test_help_option_short
     assert_raise SystemExit do
-      @command = Dockerfiroonga::Command.new(["-h"])
+      Dockerfiroonga::Command.new(["-h"])
     end
     assert do
       @output.start_with?("Usage: ")
@@ -169,7 +169,7 @@ CMD ["groonga", "--version"]
 
   def test_help_option_long
     assert_raise SystemExit do
-      @command = Dockerfiroonga::Command.new(["--help"])
+      Dockerfiroonga::Command.new(["--help"])
     end
     assert do
       @output.start_with?("Usage: ")
