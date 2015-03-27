@@ -30,12 +30,14 @@ Usage: dockerfiroonga [OPTIONS] PLATFORM [Xroonga]
         $stderr.puts(USAGE)
         exit(false)
       end
+
       @_roonga = arguments[1] || "groonga"
       unless @platform.respond_to?("installation_#{@_roonga}")
         $stderr.puts("This Xroonga is not supported yet: <#{@_roonga}>")
         $stderr.puts(USAGE)
         exit(false)
       end
+
       @maintainer = @options[:maintainer] ||
                       "Masafumi Yokoyama <yokoyama@clear-code.com>"
     end
@@ -52,11 +54,14 @@ CMD ["groonga", "--version"]
     private
     def parse_options(arguments)
       options = {}
+
       parser = OptionParser.new(<<-END_OF_BANNER)
 #{USAGE.chomp}
   OPTIONS:
       END_OF_BANNER
+
       parser.version = VERSION
+
       parser.on("-h", "--help", "Show usage") do |boolean|
         puts(parser.help)
         exit(true)
