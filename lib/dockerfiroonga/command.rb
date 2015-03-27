@@ -2,13 +2,7 @@ require "dockerfiroonga/platform"
 
 module Dockerfiroonga
   class Command
-    def self.run(arguments)
-      new(arguments).run
-    end
-
-    def initialize(arguments)
-      if arguments.empty? or /\A(?:-h|--help)\z/ =~ arguments[0]
-        $stdout.puts(<<-END_OF_USAGE)
+    USAGE = <<-END_OF_USAGE
 Usage: dockerfiroonga PLATFORM [Xroonga]
   PLATFORM:
     * debian:sid (.tar.gz)
@@ -17,7 +11,15 @@ Usage: dockerfiroonga PLATFORM [Xroonga]
   Xroonga:
     * groonga (default)
     * rroonga
-        END_OF_USAGE
+    END_OF_USAGE
+
+    def self.run(arguments)
+      new(arguments).run
+    end
+
+    def initialize(arguments)
+      if arguments.empty? or /\A(?:-h|--help)\z/ =~ arguments[0]
+        $stdout.puts(USAGE)
         exit(true)
       end
       @platform_name = arguments[0]
