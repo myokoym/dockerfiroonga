@@ -6,12 +6,16 @@ class CommandTest < Test::Unit::TestCase
     @platform_name = "ubuntu"
     @command = Dockerfiroonga::Command.new([@platform_name])
     @output = ""
+    @stderr_string = ""
     io = StringIO.new(@output)
+    stderr_io = StringIO.new(@stderr_string)
     $stdout = io
+    $stderr = stderr_io
   end
 
   def teardown
     $stdout = STDOUT
+    $stderr = STDERR
   end
 
   def test_run
@@ -190,9 +194,9 @@ CMD ["groonga", "--version"]
       Dockerfiroonga::Command.new(["firefox"])
     end
     assert_equal("This platform is not supported yet: <firefox>\n",
-                 @output.lines[0])
+                 @stderr_string.lines[0])
     assert do
-      @output.lines[1].start_with?("Usage: ")
+      @stderr_string.lines[1].start_with?("Usage: ")
     end
   end
 
@@ -201,9 +205,9 @@ CMD ["groonga", "--version"]
       Dockerfiroonga::Command.new([@platform_name, "xxxroonga"])
     end
     assert_equal("This Xroonga is not supported yet: <xxxroonga>\n",
-                 @output.lines[0])
+                 @stderr_string.lines[0])
     assert do
-      @output.lines[1].start_with?("Usage: ")
+      @stderr_string.lines[1].start_with?("Usage: ")
     end
   end
 end

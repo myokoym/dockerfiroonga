@@ -26,15 +26,15 @@ Usage: dockerfiroonga [OPTIONS] PLATFORM [Xroonga]
       begin
         @platform = Platform.new(@platform_name)
       rescue ArgumentError
-        puts("This platform is not supported yet: <#{@platform_name}>")
-        puts(USAGE)
-        exit(true)
+        $stderr.puts("This platform is not supported yet: <#{@platform_name}>")
+        $stderr.puts(USAGE)
+        exit(false)
       end
       @_roonga = arguments[1] || "groonga"
       unless @platform.respond_to?("installation_#{@_roonga}")
-        puts("This Xroonga is not supported yet: <#{@_roonga}>")
-        puts(USAGE)
-        exit(true)
+        $stderr.puts("This Xroonga is not supported yet: <#{@_roonga}>")
+        $stderr.puts(USAGE)
+        exit(false)
       end
       @maintainer = @options[:maintainer] ||
                       "Masafumi Yokoyama <yokoyama@clear-code.com>"
