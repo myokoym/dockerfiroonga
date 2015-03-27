@@ -24,7 +24,7 @@ Usage: dockerfiroonga [OPTIONS] PLATFORM [Xroonga]
 
       @platform_name = arguments[0]
       begin
-      @platform = Platform.new(@platform_name)
+        @platform = Platform.new(@platform_name)
       rescue ArgumentError
         $stdout.puts("This platform is not supported yet: <#{@platform_name}>")
         $stdout.puts(USAGE)
