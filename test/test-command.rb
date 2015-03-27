@@ -5,11 +5,11 @@ class CommandTest < Test::Unit::TestCase
   def setup
     @platform_name = "ubuntu"
     @command = Dockerfiroonga::Command.new([@platform_name])
-    @output = ""
+    @stdout_string = ""
     @stderr_string = ""
-    io = StringIO.new(@output)
+    stdout_io = StringIO.new(@stdout_string)
     stderr_io = StringIO.new(@stderr_string)
-    $stdout = io
+    $stdout = stdout_io
     $stderr = stderr_io
   end
 
@@ -21,13 +21,13 @@ class CommandTest < Test::Unit::TestCase
   def test_run
     @command.run
     assert do
-      @output.each_line.first.start_with?("FROM #{@platform_name}")
+      @stdout_string.each_line.first.start_with?("FROM #{@platform_name}")
     end
   end
 
   def test_ubuntu
     @command.run
-    assert_equal(<<-END_OF_FILE, @output)
+    assert_equal(<<-END_OF_FILE, @stdout_string)
 FROM ubuntu
 MAINTAINER Masafumi Yokoyama <yokoyama@clear-code.com>
 RUN apt-get -y install software-properties-common
@@ -43,7 +43,7 @@ CMD ["groonga", "--version"]
   def test_rroonga
     @command = Dockerfiroonga::Command.new([@platform_name, "rroonga"])
     @command.run
-    assert_equal(<<-END_OF_FILE, @output)
+    assert_equal(<<-END_OF_FILE, @stdout_string)
 FROM ubuntu
 MAINTAINER Masafumi Yokoyama <yokoyama@clear-code.com>
 RUN apt-get -y install software-properties-common
@@ -71,7 +71,7 @@ CMD ["groonga", "--version"]
       @command = Dockerfiroonga::Command.new([@platform_name, "groonga"])
       @command.run
       version = "5.0.0"
-      assert_equal(<<-END_OF_FILE, @output)
+      assert_equal(<<-END_OF_FILE, @stdout_string)
 FROM debian:sid
 MAINTAINER Masafumi Yokoyama <yokoyama@clear-code.com>
 RUN apt-get update
@@ -91,7 +91,7 @@ CMD ["groonga", "--version"]
       @command = Dockerfiroonga::Command.new([@platform_name, "rroonga"])
       @command.run
       version = "5.0.0"
-      assert_equal(<<-END_OF_FILE, @output)
+      assert_equal(<<-END_OF_FILE, @stdout_string)
 FROM debian:sid
 MAINTAINER Masafumi Yokoyama <yokoyama@clear-code.com>
 RUN apt-get update
@@ -121,7 +121,7 @@ CMD ["groonga", "--version"]
     def test_groonga
       @command = Dockerfiroonga::Command.new([@platform_name, "groonga"])
       @command.run
-      assert_equal(<<-END_OF_FILE, @output)
+      assert_equal(<<-END_OF_FILE, @stdout_string)
 FROM centos
 MAINTAINER Masafumi Yokoyama <yokoyama@clear-code.com>
 RUN rpm -ivh http://packages.groonga.org/centos/groonga-release-1.1.0-1.noarch.rpm
@@ -135,7 +135,7 @@ CMD ["groonga", "--version"]
     def test_rroonga
       @command = Dockerfiroonga::Command.new([@platform_name, "rroonga"])
       @command.run
-      assert_equal(<<-END_OF_FILE, @output)
+      assert_equal(<<-END_OF_FILE, @stdout_string)
 FROM centos
 MAINTAINER Masafumi Yokoyama <yokoyama@clear-code.com>
 RUN rpm -ivh http://packages.groonga.org/centos/groonga-release-1.1.0-1.noarch.rpm
@@ -158,7 +158,7 @@ CMD ["groonga", "--version"]
       Dockerfiroonga::Command.new([])
     end
     assert do
-      @output.start_with?("Usage: ")
+      @stdout_string.start_with?("Usage: ")
     end
   end
 
@@ -167,7 +167,7 @@ CMD ["groonga", "--version"]
       Dockerfiroonga::Command.new(["-h"])
     end
     assert do
-      @output.start_with?("Usage: ")
+      @stdout_string.start_with?("Usage: ")
     end
   end
 
@@ -176,7 +176,7 @@ CMD ["groonga", "--version"]
       Dockerfiroonga::Command.new(["--help"])
     end
     assert do
-      @output.start_with?("Usage: ")
+      @stdout_string.start_with?("Usage: ")
     end
   end
 
@@ -186,7 +186,7 @@ CMD ["groonga", "--version"]
                                              @platform_name,
                                            ])
     @command.run
-    assert_equal("MAINTAINER Me\n", @output.lines[1])
+    assert_equal("MAINTAINER Me\n", @stdout_string.lines[1])
   end
 
   def test_not_supported_platform
