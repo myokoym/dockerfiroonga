@@ -1,5 +1,6 @@
 require "optparse"
 require "dockerfiroonga/platform"
+require "dockerfiroonga/version"
 
 module Dockerfiroonga
   class Command
@@ -20,6 +21,7 @@ Usage: dockerfiroonga PLATFORM [Xroonga]
 
     def initialize(arguments)
       parser = OptionParser.new(USAGE.each_line.first)
+      parser.version = VERSION
       parser.on("-h", "--help", "Show usage") do |boolean|
         $stdout.puts(USAGE)
         exit(true)
