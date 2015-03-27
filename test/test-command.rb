@@ -21,7 +21,7 @@ class CommandTest < Test::Unit::TestCase
   def test_run
     @command.run
     assert do
-      @stdout_string.each_line.first.start_with?("FROM #{@platform_name}")
+      @stdout_string.lines.first.start_with?("FROM #{@platform_name}")
     end
   end
 
