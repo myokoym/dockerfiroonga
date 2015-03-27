@@ -7,7 +7,7 @@ module Dockerfiroonga
     end
 
     def initialize(arguments)
-      if arguments.empty? or /-h|--help/ =~ arguments[0]
+      if arguments.empty? or /\A(?:-h|--help)\z/ =~ arguments[0]
         $stdout.puts(<<-END_OF_USAGE)
 Usage: dockerfiroonga PLATFORM [Xroonga]
   PLATFORM:
