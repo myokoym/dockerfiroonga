@@ -150,24 +150,30 @@ CMD ["groonga", "--version"]
   end
 
   def test_no_argument
+    assert_raise SystemExit do
     @command = Dockerfiroonga::Command.new([])
     @command.run
+    end
     assert do
       @output.start_with?("Usage: ")
     end
   end
 
   def test_help_option_short
+    assert_raise SystemExit do
     @command = Dockerfiroonga::Command.new(["-h"])
     @command.run
+    end
     assert do
       @output.start_with?("Usage: ")
     end
   end
 
   def test_help_option_long
+    assert_raise SystemExit do
     @command = Dockerfiroonga::Command.new(["--help"])
     @command.run
+    end
     assert do
       @output.start_with?("Usage: ")
     end
