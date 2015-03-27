@@ -1,3 +1,4 @@
+require "optparse"
 require "dockerfiroonga/platform"
 
 module Dockerfiroonga
@@ -18,7 +19,14 @@ Usage: dockerfiroonga PLATFORM [Xroonga]
     end
 
     def initialize(arguments)
-      if arguments.empty? or /\A(?:-h|--help)\z/ =~ arguments[0]
+      parser = OptionParser.new(USAGE.each_line.first)
+      parser.on("-h", "--help", "Show usage") do |boolean|
+        $stdout.puts(USAGE)
+        exit(true)
+      end
+      parser.parse!(arguments)
+
+      if arguments.empty?
         $stdout.puts(USAGE)
         exit(true)
       end
