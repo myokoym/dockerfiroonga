@@ -185,9 +185,25 @@ CMD ["groonga", "--version"]
     assert_equal("MAINTAINER Me\n", @output.lines[1])
   end
 
+  def test_not_supported_platform
+    assert_raise SystemExit do
+      Dockerfiroonga::Command.new(["firefox"])
+    end
+    assert_equal("This platform is not supported yet: <firefox>\n",
+                 @output.lines[0])
+    assert do
+      @output.lines[1].start_with?("Usage: ")
+    end
+  end
+
   def test_not_supported_xroonga
-    assert_raise ArgumentError do
+    assert_raise SystemExit do
       Dockerfiroonga::Command.new([@platform_name, "xxxroonga"])
+    end
+    assert_equal("This Xroonga is not supported yet: <xxxroonga>\n",
+                 @output.lines[0])
+    assert do
+      @output.lines[1].start_with?("Usage: ")
     end
   end
 end

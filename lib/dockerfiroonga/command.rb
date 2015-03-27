@@ -23,10 +23,18 @@ Usage: dockerfiroonga [OPTIONS] PLATFORM [Xroonga]
       @options = parse_options(arguments)
 
       @platform_name = arguments[0]
+      begin
       @platform = Platform.new(@platform_name)
+      rescue ArgumentError
+        $stdout.puts("This platform is not supported yet: <#{@platform_name}>")
+        $stdout.puts(USAGE)
+        exit(true)
+      end
       @_roonga = arguments[1] || "groonga"
       unless @platform.respond_to?("installation_#{@_roonga}")
-        raise ArgumentError, "Not supported yet: <#{@_roonga}>"
+        $stdout.puts("This Xroonga is not supported yet: <#{@_roonga}>")
+        $stdout.puts(USAGE)
+        exit(true)
       end
       @maintainer = @options[:maintainer] ||
                       "Masafumi Yokoyama <yokoyama@clear-code.com>"
