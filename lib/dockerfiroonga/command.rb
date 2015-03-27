@@ -5,7 +5,7 @@ require "dockerfiroonga/version"
 module Dockerfiroonga
   class Command
     USAGE = <<-END_OF_USAGE
-Usage: dockerfiroonga PLATFORM [Xroonga]
+Usage: dockerfiroonga [OPTIONS] PLATFORM [Xroonga]
   PLATFORM:
     * debian:sid (.tar.gz)
     * ubuntu (PPA)
@@ -20,16 +20,23 @@ Usage: dockerfiroonga PLATFORM [Xroonga]
     end
 
     def initialize(arguments)
-      parser = OptionParser.new(USAGE.each_line.first)
+      @options = {}
+      parser = OptionParser.new(<<-END_OF_BANNER)
+#{USAGE.chomp}
+  OPTIONS:
+      END_OF_BANNER
       parser.version = VERSION
       parser.on("-h", "--help", "Show usage") do |boolean|
-        $stdout.puts(USAGE)
+        $stdout.puts(parser.help)
         exit(true)
+      end
+      parser.on("--maintainer=NAME", "Set maintainer") do |name|
+        @options[:maintainer] = name
       end
       parser.parse!(arguments)
 
       if arguments.empty?
-        $stdout.puts(USAGE)
+        $stdout.puts(parser.help)
         exit(true)
       end
       @platform_name = arguments[0]
@@ -38,12 +45,14 @@ Usage: dockerfiroonga PLATFORM [Xroonga]
       unless @platform.respond_to?("installation_#{@_roonga}")
         raise ArgumentError, "Not supported yet: <#{@_roonga}>"
       end
+      @maintainer = @options[:maintainer] ||
+                      "Masafumi Yokoyama <yokoyama@clear-code.com>"
     end
 
     def run
       puts <<-END_OF_FILE
 FROM #{@platform_name}
-MAINTAINER Masafumi Yokoyama <yokoyama@clear-code.com>
+MAINTAINER #{@maintainer}
 #{@platform.__send__("installation_#{@_roonga}")}
 CMD ["groonga", "--version"]
       END_OF_FILE

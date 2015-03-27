@@ -173,6 +173,15 @@ CMD ["groonga", "--version"]
     end
   end
 
+  def test_maintainer_option
+    @command = Dockerfiroonga::Command.new([
+                                             "--maintainer=Me",
+                                             @platform_name,
+                                           ])
+    @command.run
+    assert_equal("MAINTAINER Me\n", @output.lines[1])
+  end
+
   def test_not_supported_xroonga
     assert_raise ArgumentError do
       Dockerfiroonga::Command.new([@platform_name, "xxxroonga"])
