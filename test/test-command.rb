@@ -61,6 +61,52 @@ CMD ["groonga", "--version"]
     END_OF_FILE
   end
 
+  class DebianWheezyTest < self
+    def setup
+      super
+      @platform_name = "debian:wheezy"
+    end
+
+    def test_groonga
+      @command = Dockerfiroonga::Command.new([@platform_name, "groonga"])
+      @command.run
+      assert_equal(<<-END_OF_FILE, @stdout_string)
+FROM debian:wheezy
+MAINTAINER Masafumi Yokoyama <yokoyama@clear-code.com>
+RUN echo "deb http://packages.groonga.org/debian/ wheezy main" >/etc/apt/sources.list.d/groonga.list
+RUN echo "deb-src http://packages.groonga.org/debian/ wheezy main" >>/etc/apt/sources.list.d/groonga.list
+RUN apt-get update
+RUN apt-get install -y --allow-unauthenticated groonga-keyring
+RUN apt-get update
+RUN apt-get install -y -V groonga
+
+CMD ["groonga", "--version"]
+      END_OF_FILE
+    end
+
+    def test_rroonga
+      @command = Dockerfiroonga::Command.new([@platform_name, "rroonga"])
+      @command.run
+      assert_equal(<<-END_OF_FILE, @stdout_string)
+FROM debian:wheezy
+MAINTAINER Masafumi Yokoyama <yokoyama@clear-code.com>
+RUN echo "deb http://packages.groonga.org/debian/ wheezy main" >/etc/apt/sources.list.d/groonga.list
+RUN echo "deb-src http://packages.groonga.org/debian/ wheezy main" >>/etc/apt/sources.list.d/groonga.list
+RUN apt-get update
+RUN apt-get install -y --allow-unauthenticated groonga-keyring
+RUN apt-get update
+RUN apt-get install -y -V groonga
+
+RUN apt-get install -y -V libgroonga-dev
+RUN apt-get install -y -V ruby-dev
+RUN apt-get install -y -V build-essential
+RUN gem install rroonga
+
+CMD ["groonga", "--version"]
+      END_OF_FILE
+    end
+  end
+
   class DebianSidTest < self
     def setup
       super

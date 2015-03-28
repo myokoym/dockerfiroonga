@@ -7,6 +7,7 @@ module Dockerfiroonga
     USAGE = <<-END_OF_USAGE
 Usage: dockerfiroonga [OPTIONS] PLATFORM [Xroonga]
   PLATFORM:
+    * debian:wheezy (APT)
     * debian:sid (.tar.gz)
     * ubuntu (PPA)
     * centos (yum)
