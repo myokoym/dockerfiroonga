@@ -2,14 +2,13 @@ module Dockerfiroonga
   module Platform
     module_function
     def self.new(name)
-      require_name = name.gsub(/:/, "_")
+      os, version = name.split(/:/)
       begin
-        require "dockerfiroonga/platform/#{require_name}"
+        require "dockerfiroonga/platform/#{os}"
       rescue LoadError
         raise ArgumentError, "Invalid name: <#{name}>"
       end
-      class_name = name.split(/:/).collect {|w| w.capitalize}.join
-      const_get(class_name).new
+      const_get(os.capitalize).new(version)
     end
   end
 end
