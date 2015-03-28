@@ -197,6 +197,46 @@ RUN gem install rroonga
 CMD ["groonga", "--version"]
       END_OF_FILE
     end
+
+    def test_mroonga_centos6
+      @platform_name = "centos:6"
+      @command = Dockerfiroonga::Command.new([@platform_name, "mroonga"])
+      @command.run
+      assert_equal(<<-END_OF_FILE, @stdout_string)
+FROM centos:6
+MAINTAINER Masafumi Yokoyama <yokoyama@clear-code.com>
+RUN rpm -ivh http://packages.groonga.org/centos/groonga-release-1.1.0-1.noarch.rpm
+RUN yum makecache
+RUN yum install -y groonga
+
+RUN yum install -y http://repo.mysql.com/mysql-community-release-el6-5.noarch.rpm
+RUN yum makecache
+RUN yum install -y mysql-community-server
+RUN /sbin/service mysqld start
+RUN yum install -y mysql-community-mroonga
+
+CMD ["groonga", "--version"]
+      END_OF_FILE
+    end
+
+    def test_mroonga_centos5
+      @platform_name = "centos:5"
+      @command = Dockerfiroonga::Command.new([@platform_name, "mroonga"])
+      @command.run
+      assert_equal(<<-END_OF_FILE, @stdout_string)
+FROM centos:5
+MAINTAINER Masafumi Yokoyama <yokoyama@clear-code.com>
+RUN rpm -ivh http://packages.groonga.org/centos/groonga-release-1.1.0-1.noarch.rpm
+RUN yum makecache
+RUN yum install -y groonga
+
+RUN yum install -y mysql55-mysql-server
+RUN /sbin/service mysql55-mysqld start
+RUN yum install -y mysql55-mroonga
+
+CMD ["groonga", "--version"]
+      END_OF_FILE
+    end
   end
 
   def test_no_argument
