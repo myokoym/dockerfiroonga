@@ -29,6 +29,18 @@ RUN gem install rroonga
         END_OF_INSTALLATION
       end
 
+      def installation_mroonga(version="5.0.0")
+        case @os_version
+        when "wheezy"
+          <<-END_OF_INSTALLATION
+#{installation_groonga}
+#{installation_mroonga_wheezy.chomp}
+          END_OF_INSTALLATION
+        else
+          raise ArgumentError, "Not supported: <#{@os_version}>"
+        end
+      end
+
       private
       def installation_groonga_wheezy
         codename = "wheezy"
@@ -53,6 +65,12 @@ RUN cd groonga-#{version}/                            && \
     ./configure --prefix=/usr/local                   && \
     make -j$(grep '^processor' /proc/cpuinfo | wc -l) && \
     make install
+        END_OF_INSTALLATION
+      end
+
+      def installation_mroonga_wheezy
+        <<-END_OF_INSTALLATION
+RUN apt-get install -y -V mysql-server-mroonga
         END_OF_INSTALLATION
       end
     end
