@@ -44,7 +44,10 @@ RUN gem install rroonga
       private
       def installation_groonga_wheezy
         codename = "wheezy"
+        installation_groonga_from_packages(codename)
+      end
 
+      def installation_groonga_from_packages(codename)
         <<-END_OF_INSTALLATION
 RUN echo "deb http://packages.groonga.org/debian/ #{codename} main" >/etc/apt/sources.list.d/groonga.list
 RUN echo "deb-src http://packages.groonga.org/debian/ #{codename} main" >>/etc/apt/sources.list.d/groonga.list
@@ -70,6 +73,7 @@ RUN cd groonga-#{version}/                            && \
 
       def installation_mroonga_wheezy
         <<-END_OF_INSTALLATION
+RUN /etc/init.d/mysql start
 RUN apt-get install -y -V mysql-server-mroonga
         END_OF_INSTALLATION
       end
