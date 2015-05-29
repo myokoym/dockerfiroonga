@@ -13,6 +13,7 @@ Dockerfile generator for Groonga family.
 ### PLATFORM
 
 * `debian[:wheezy]` (APT)
+* `debian[:jessie]` (APT)
 * `debian:XXX` (.tar.gz)
 * `ubuntu` (PPA)
 * `centos` (yum)

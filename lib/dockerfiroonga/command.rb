@@ -8,6 +8,7 @@ module Dockerfiroonga
 Usage: dockerfiroonga [OPTIONS] PLATFORM [Xroonga]
   PLATFORM:
     * debian[:wheezy] (APT)
+    * debian[:jessie] (APT)
     * debian:XXX (.tar.gz)
     * ubuntu (PPA)
     * centos (yum)

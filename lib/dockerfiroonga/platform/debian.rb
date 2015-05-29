@@ -14,6 +14,8 @@ module Dockerfiroonga
         case @os_version
         when "wheezy"
           installation_groonga_wheezy
+        when "jessie"
+          installation_groonga_jessie
         else
           installation_groonga_source(version)
         end
@@ -44,6 +46,11 @@ RUN gem install rroonga
       private
       def installation_groonga_wheezy
         codename = "wheezy"
+        installation_groonga_from_packages(codename)
+      end
+
+      def installation_groonga_jessie
+        codename = "jessie"
         installation_groonga_from_packages(codename)
       end
 

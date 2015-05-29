@@ -107,6 +107,30 @@ CMD ["groonga", "--version"]
     end
   end
 
+  class DebianJessieTest < self
+    def setup
+      super
+      @platform_name = "debian:jessie"
+    end
+
+    def test_groonga
+      @command = Dockerfiroonga::Command.new([@platform_name, "groonga"])
+      @command.run
+      assert_equal(<<-END_OF_FILE, @stdout_string)
+FROM debian:jessie
+MAINTAINER Masafumi Yokoyama <yokoyama@clear-code.com>
+RUN echo "deb http://packages.groonga.org/debian/ jessie main" >/etc/apt/sources.list.d/groonga.list
+RUN echo "deb-src http://packages.groonga.org/debian/ jessie main" >>/etc/apt/sources.list.d/groonga.list
+RUN apt-get update
+RUN apt-get install -y --allow-unauthenticated groonga-keyring
+RUN apt-get update
+RUN apt-get install -y -V groonga
+
+CMD ["groonga", "--version"]
+      END_OF_FILE
+    end
+  end
+
   class DebianSidTest < self
     def setup
       super
